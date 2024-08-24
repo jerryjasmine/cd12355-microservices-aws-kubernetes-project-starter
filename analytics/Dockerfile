@@ -6,13 +6,14 @@ RUN apt install build-essential libpq-dev -y
 
 RUN pip install --upgrade pip setuptools wheel
 WORKDIR /src
-COPY requirements.txt requirements.txt
+COPY ./analytics/requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
-RUN export DB_USERNAME=myuser
-RUN export DB_PASSWORD=${POSTGRES_PASSWORD}
-RUN export DB_HOST=127.0.0.1
-RUN export DB_PORT=5433
-RUN export DB_NAME=mydatabase
-
+ENV DB_USERNAME=myuser
+ENV DB_PASSWORD=${POSTGRES_PASSWORD}
+ENV DB_HOST=127.0.0.1
+ENV DB_PORT=5433
+ENV DB_NAME=mydatabase
+COPY ./analytics/app.py app.py
+COPY ./analytics/config.py config.py
 CMD python app.py
